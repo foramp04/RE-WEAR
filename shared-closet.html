@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shared Closet | Re:Wear</title>
+
+    <link rel="stylesheet" href="shared-closet.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="top-header">
+
+        <div class="logo">
+            RE:WEAR
+        </div>
+
+        <div class="tagline">
+            Rewear. Restyle. Repeat.
+        </div>
+
+    </header>
+
+
+    <!-- ================= LAYOUT ================= -->
+
+    <div class="page-layout">
+
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-top">
+
+                <div class="space-title">
+                    <span>Your Re:Space</span>
+
+                    <button class="menu-button" aria-label="Menu">
+                        ☰
+                    </button>
+                </div>
+
+
+                <nav class="navigation">
+
+                    <a href="wardrobe.html" class="nav-item">
+                        <span class="nav-icon">♧</span>
+                        <span>Wardrobe</span>
+                    </a>
+
+                    <a href="outfits.html" class="nav-item">
+                        <span class="nav-icon">✧</span>
+                        <span>Outfits</span>
+                    </a>
+
+                    <a href="calendar.html" class="nav-item">
+                        <span class="nav-icon">▣</span>
+                        <span>Calendar</span>
+                    </a>
+
+                    <a href="shared-closet.html" class="nav-item active">
+                        <span class="nav-icon">♧</span>
+                        <span>Shared Closet</span>
+                    </a>
+
+                    <a href="profile.html" class="nav-item">
+                        <span class="nav-icon">♙</span>
+                        <span>Profile</span>
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="#" class="sign-out">
+                    <span class="sign-out-icon">↪</span>
+                    <span>Sign Out</span>
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+            <section class="content-container">
+
+
+                <!-- Page heading -->
+
+                <div class="page-heading">
+
+                    <h1>
+                        SHARED CLOSET
+                        <span>|</span>
+                        A SECOND LIFE
+                    </h1>
+
+                    <p>
+                        Pieces the Re:wear community has offered up.
+                        Request something that catches your eye and give it a new home.
+                    </p>
+
+                </div>
+
+
+                <!-- ================= TABS ================= -->
+
+                <div class="tabs">
+
+                    <button
+                        class="tab-button active"
+                        data-tab="browse"
+                        id="browseTab">
+                        Browse
+                    </button>
+
+                    <button
+                        class="tab-button"
+                        data-tab="requests"
+                        id="requestsTab">
+                        Requests
+                    </button>
+
+                    <button
+                        class="tab-button"
+                        data-tab="myRequests"
+                        id="myRequestsTab">
+                        My Requests
+                    </button>
+
+                </div>
+
+
+                <!-- ================= BROWSE ================= -->
+
+                <section
+                    class="tab-content active"
+                    id="browse">
+
+                    <div
+                        class="clothing-grid"
+                        id="browseGrid">
+                    </div>
+
+                    <div
+                        class="empty-state"
+                        id="browseEmpty">
+
+                        <p>
+                            No pieces have been shared yet.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= REQUESTS ================= -->
+
+                <section
+                    class="tab-content"
+                    id="requests">
+
+                    <div
+                        class="requests-container"
+                        id="incomingRequests">
+                    </div>
+
+                    <div
+                        class="large-empty-state"
+                        id="requestsEmpty">
+
+                        <p>
+                            No incoming requests yet.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= MY REQUESTS ================= -->
+
+                <section
+                    class="tab-content"
+                    id="myRequests">
+
+                    <div
+                        class="my-requests-container"
+                        id="myRequestsContainer">
+                    </div>
+
+                    <div
+                        class="large-empty-state"
+                        id="myRequestsEmpty">
+
+                        <p>
+                            You haven't requested anything yet.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-left">
+
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+
+        </div>
+
+        <div class="copyright">
+            © 2026
+        </div>
+
+    </footer>
+
+
+    <script src="shared-closet.js"></script>
+
+</body>
+</html>
