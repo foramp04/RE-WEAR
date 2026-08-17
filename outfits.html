@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RE:WEAR | Outfits</title>
+
+    <link rel="stylesheet" href="outfits.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="top-header">
+        <div class="logo">RE:WEAR</div>
+
+        <div class="tagline">
+            Rewear. Restyle. Repeat.
+        </div>
+    </header>
+
+
+    <div class="page-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+                <strong>Your Re:Space</strong>
+                <span class="menu-icon">☰</span>
+            </div>
+
+            <nav class="navigation">
+
+                <a href="dashboard.html">
+                    <span class="nav-icon">♧</span>
+                    Wardrobe
+                </a>
+
+                <a href="outfits.html" class="active">
+                    <span class="nav-icon">✧</span>
+                    Outfits
+                </a>
+
+                <a href="calendar.html">
+                    <span class="nav-icon">▣</span>
+                    Calendar
+                </a>
+
+                <a href="shared-closet.html">
+                    <span class="nav-icon">♧</span>
+                    Shared Closet
+                </a>
+
+                <a href="profile.html">
+                    <span class="nav-icon">♙</span>
+                    Profile
+                </a>
+
+            </nav>
+
+            <a href="#" class="sign-out" id="signOut">
+                <span>↪</span>
+                Sign Out
+            </a>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <div class="content-header">
+
+                <h1>
+                    <span>OUTFITS</span>
+                    <b>|</b>
+                    CURATED LOOKS
+                </h1>
+
+                <button class="new-outfit-btn" id="newOutfitBtn">
+                    <span>+</span>
+                    New Outfit
+                </button>
+
+            </div>
+
+
+            <!-- OUTFIT GRID -->
+            <section class="outfit-grid" id="outfitGrid">
+
+                <!-- Empty state gets inserted by JavaScript -->
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+
+        <div class="copyright">
+            © 2026
+        </div>
+
+    </footer>
+
+
+    <div class="modal-overlay" id="outfitModal">
+
+        <div class="outfit-modal">
+
+            <!-- MODAL HEADER -->
+            <div class="modal-header">
+
+                <h2>Compose an outfit</h2>
+
+                <button class="close-modal" id="closeModal">
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- MODAL BODY -->
+            <div class="modal-body">
+
+
+                <!-- LEFT SIDE -->
+                <div class="creator-area">
+
+                    <div class="input-row">
+
+                        <div class="input-group">
+                            <label for="outfitName">
+                                Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="outfitName"
+                                placeholder="Sunday brunch"
+                            >
+                        </div>
+
+
+                        <div class="input-group">
+                            <label for="outfitNotes">
+                                Notes
+                            </label>
+
+                            <input
+                                type="text"
+                                id="outfitNotes"
+                                placeholder="Optional"
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <!-- DROP AREA -->
+                    <div
+                        class="drop-zone"
+                        id="dropZone"
+                    >
+
+                        <div
+                            class="drop-message"
+                            id="dropMessage"
+                        >
+                            <div class="drop-icon">
+                                ♧
+                            </div>
+
+                            <h3>
+                                Build your outfit
+                            </h3>
+
+                            <p>
+                                Drag pieces from your wardrobe here
+                            </p>
+
+                            <span>
+                                or click a piece to add it
+                            </span>
+                        </div>
+
+
+                        <div
+                            class="selected-items"
+                            id="selectedItems"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RIGHT SIDE -->
+                <aside class="wardrobe-tray">
+
+                    <div class="tray-header">
+
+                        <h3>
+                            YOUR PIECES
+                        </h3>
+
+                        <p>
+                            Drag onto the canvas
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="tray-items"
+                        id="trayItems"
+                    >
+
+                        <!-- Wardrobe items inserted here -->
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+
+            <!-- MODAL FOOTER -->
+            <div class="modal-footer">
+
+                <p id="outfitError"></p>
+
+                <button
+                    class="save-outfit-btn"
+                    id="saveOutfitBtn"
+                >
+                    Save outfit
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="outfits.js"></script>
+
+</body>
+</html>
