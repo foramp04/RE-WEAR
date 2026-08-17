@@ -1,0 +1,1041 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f3ed;
+    color: #4b362c;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.top-header {
+    height: 103px;
+    border-bottom: 1px solid #ddd7ce;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 60px;
+
+    background: #faf7f2;
+}
+
+
+.logo {
+    font-family: Georgia, serif;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+
+.tagline {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-style: italic;
+    color: #75645a;
+}
+
+
+/* =========================
+   PAGE LAYOUT
+========================= */
+
+.page-layout {
+    display: flex;
+    min-height: calc(100vh - 103px - 72px);
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width: 328px;
+    background: #ece7db;
+
+    padding: 40px 20px 25px;
+
+    display: flex;
+    flex-direction: column;
+
+    flex-shrink: 0;
+}
+
+
+.sidebar-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 13px;
+
+    font-size: 21px;
+    margin-bottom: 45px;
+}
+
+
+.menu-icon {
+    font-size: 20px;
+    color: #6f6259;
+}
+
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.navigation a {
+    height: 63px;
+
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    padding: 0 28px;
+
+    text-decoration: none;
+
+    color: #62574f;
+
+    font-size: 20px;
+
+    border-radius: 10px;
+
+    transition: 0.2s ease;
+}
+
+
+.navigation a:hover {
+    background: #dfd8ca;
+}
+
+
+.navigation a.active {
+    background: #452d24;
+    color: white;
+}
+
+
+.nav-icon {
+    width: 25px;
+    text-align: center;
+    font-size: 21px;
+}
+
+
+.sign-out {
+    margin-top: auto;
+
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 0 25px;
+
+    color: #62574f;
+    text-decoration: none;
+
+    font-size: 19px;
+
+    border-radius: 10px;
+}
+
+
+.sign-out:hover {
+    background: #dfd8ca;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+    flex: 1;
+    padding: 70px 58px;
+
+    min-width: 0;
+}
+
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 45px;
+}
+
+
+.content-header h1 {
+    font-family: Georgia, serif;
+
+    font-size: 34px;
+
+    letter-spacing: 2px;
+
+    font-weight: normal;
+}
+
+
+.content-header h1 span {
+    font-weight: bold;
+}
+
+
+.content-header h1 b {
+    color: #b9b0a6;
+    margin: 0 12px;
+    font-weight: normal;
+}
+
+
+.new-outfit-btn {
+    border: none;
+
+    background: #452d24;
+    color: white;
+
+    padding: 18px 30px;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+
+    transition: 0.2s ease;
+}
+
+
+.new-outfit-btn:hover {
+    background: #5a3c30;
+    transform: translateY(-1px);
+}
+
+
+.new-outfit-btn span {
+    font-size: 23px;
+    margin-right: 9px;
+}
+
+
+/* =========================
+   OUTFIT GRID
+========================= */
+
+.outfit-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+    gap: 35px;
+
+    align-items: start;
+}
+
+
+/* EMPTY STATE */
+
+.empty-state {
+    grid-column: 1 / -1;
+
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #756a61;
+}
+
+
+.empty-state-icon {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 20px;
+
+    background: #eee9df;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
+
+    color: #bdb5ac;
+
+    margin-bottom: 25px;
+}
+
+
+.empty-state h2 {
+    font-family: Georgia, serif;
+
+    font-size: 27px;
+
+    font-weight: normal;
+
+    margin-bottom: 10px;
+}
+
+
+.empty-state p {
+    font-size: 16px;
+
+    color: #8a8179;
+}
+
+
+/* =========================
+   OUTFIT CARD
+========================= */
+
+.outfit-card {
+    background: white;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.outfit-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+
+.outfit-preview {
+    height: 350px;
+
+    background: #eee9df;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 20px;
+
+    overflow: hidden;
+}
+
+
+.outfit-preview img {
+    width: 30%;
+    height: 85%;
+
+    object-fit: contain;
+
+    background: white;
+
+    border-radius: 5px;
+}
+
+
+.outfit-card-name {
+    padding: 24px;
+
+    font-family: Georgia, serif;
+
+    font-size: 23px;
+
+    text-align: center;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    height: 72px;
+
+    background: #777774;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 60px;
+}
+
+
+.footer-links {
+    display: flex;
+    gap: 40px;
+}
+
+
+.footer a {
+    color: white;
+    text-decoration: none;
+
+    font-size: 16px;
+}
+
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+
+.copyright {
+    font-size: 16px;
+}
+
+
+/* =========================
+   MODAL OVERLAY
+========================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.76);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    z-index: 9999;
+}
+
+
+.modal-overlay.show {
+    display: flex;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.outfit-modal {
+    width: min(1300px, 95vw);
+
+    height: min(820px, 90vh);
+
+    background: #faf6ee;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+
+.modal-header {
+    height: 90px;
+
+    padding: 0 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    flex-shrink: 0;
+}
+
+
+.modal-header h2 {
+    font-family: Georgia, serif;
+
+    font-size: 27px;
+
+    font-weight: normal;
+}
+
+
+.close-modal {
+    border: none;
+
+    background: transparent;
+
+    font-size: 34px;
+
+    color: #756c65;
+
+    cursor: pointer;
+
+    line-height: 1;
+}
+
+
+.close-modal:hover {
+    color: #452d24;
+}
+
+
+/* =========================
+   MODAL BODY
+========================= */
+
+.modal-body {
+    flex: 1;
+
+    display: flex;
+
+    min-height: 0;
+
+    border-top: 1px solid #e0d9ce;
+}
+
+
+.creator-area {
+    flex: 1;
+
+    padding: 35px 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.input-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.input-group label {
+    font-size: 15px;
+
+    font-weight: bold;
+
+    color: #51483f;
+}
+
+
+.input-group input {
+    width: 100%;
+
+    height: 45px;
+
+    border: 1px solid #d9d0c4;
+
+    background: #fffdf8;
+
+    border-radius: 7px;
+
+    padding: 0 15px;
+
+    font-size: 16px;
+
+    color: #4b362c;
+
+    outline: none;
+}
+
+
+.input-group input:focus {
+    border-color: #b98259;
+
+    box-shadow: 0 0 0 2px rgba(185,130,89,0.12);
+}
+
+
+/* =========================
+   DROP ZONE
+========================= */
+
+.drop-zone {
+    flex: 1;
+
+    min-height: 350px;
+
+    border: 1px solid #d8d0c5;
+
+    background-color: #fffdf9;
+
+    border-radius: 10px;
+
+    position: relative;
+
+    overflow: auto;
+
+    padding: 25px;
+
+    transition: 0.2s ease;
+}
+
+
+.drop-zone.drag-over {
+    border: 2px dashed #8b614b;
+
+    background: #f7efe5;
+}
+
+
+.drop-message {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #756b62;
+
+    pointer-events: none;
+}
+
+
+.drop-icon {
+    font-size: 45px;
+
+    color: #c3bbb1;
+
+    margin-bottom: 15px;
+}
+
+
+.drop-message h3 {
+    font-family: Georgia, serif;
+
+    font-size: 22px;
+
+    font-weight: normal;
+
+    margin-bottom: 8px;
+}
+
+
+.drop-message p {
+    font-size: 15px;
+
+    margin-bottom: 5px;
+}
+
+
+.drop-message span {
+    font-size: 13px;
+
+    color: #aaa098;
+}
+
+
+/* =========================
+   SELECTED ITEMS
+========================= */
+
+.selected-items {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 100%;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-content: flex-start;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    z-index: 2;
+}
+
+
+.selected-item {
+    width: 135px;
+
+    height: 185px;
+
+    background: white;
+
+    border-radius: 9px;
+
+    border: 1px solid #ddd4c9;
+
+    position: relative;
+
+    padding: 10px;
+
+    cursor: grab;
+
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+
+.selected-item img {
+    width: 100%;
+
+    height: 135px;
+
+    object-fit: contain;
+}
+
+
+.selected-item-name {
+    font-size: 12px;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.remove-item {
+    position: absolute;
+
+    top: -8px;
+    right: -8px;
+
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: #452d24;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    z-index: 5;
+}
+
+
+/* =========================
+   WARDROBE TRAY
+========================= */
+
+.wardrobe-tray {
+    width: 300px;
+
+    border-left: 1px solid #ddd5ca;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 0;
+}
+
+
+.tray-header {
+    padding: 25px 20px;
+
+    border-bottom: 1px solid #ddd5ca;
+}
+
+
+.tray-header h3 {
+    font-size: 14px;
+
+    letter-spacing: 3px;
+
+    font-weight: normal;
+
+    margin-bottom: 7px;
+}
+
+
+.tray-header p {
+    font-size: 14px;
+
+    color: #746a62;
+}
+
+
+.tray-items {
+    flex: 1;
+
+    padding: 15px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    align-content: start;
+
+    gap: 10px;
+
+    overflow-y: auto;
+}
+
+
+.tray-empty {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 50px 10px;
+
+    color: #938980;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+.tray-item {
+    background: #fffdf9;
+
+    border: 1px solid #ddd5ca;
+
+    border-radius: 8px;
+
+    padding: 8px;
+
+    cursor: grab;
+
+    transition: 0.15s ease;
+}
+
+
+.tray-item:hover {
+    transform: translateY(-2px);
+
+    border-color: #bca28f;
+}
+
+
+.tray-item:active {
+    cursor: grabbing;
+}
+
+
+.tray-item img {
+    width: 100%;
+
+    height: 100px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+.tray-item-name {
+    font-size: 12px;
+
+    margin-top: 6px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================
+   MODAL FOOTER
+========================= */
+
+.modal-footer {
+    min-height: 75px;
+
+    border-top: 1px solid #ddd5ca;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 20px;
+
+    padding: 12px 25px;
+
+    flex-shrink: 0;
+}
+
+
+#outfitError {
+    color: #a14f3d;
+
+    font-size: 14px;
+
+    margin-right: auto;
+}
+
+
+.save-outfit-btn {
+    background: #30251f;
+
+    border: none;
+
+    color: white;
+
+    padding: 14px 28px;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.save-outfit-btn:hover {
+    background: #4a362b;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 220px;
+    }
+
+    .navigation a {
+        padding: 0 15px;
+        font-size: 16px;
+    }
+
+    .main-content {
+        padding: 40px 30px;
+    }
+
+    .wardrobe-tray {
+        width: 240px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .top-header {
+        padding: 0 25px;
+    }
+
+    .tagline {
+        display: none;
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+
+    .content-header {
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .content-header h1 {
+        font-size: 24px;
+    }
+
+    .outfit-modal {
+        height: 95vh;
+    }
+
+    .modal-body {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .creator-area {
+        min-height: 500px;
+    }
+
+    .wardrobe-tray {
+        width: 100%;
+        height: 260px;
+    }
+
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+
+}
