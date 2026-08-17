@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RE:WEAR | Calendar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Playfair+Display:wght@500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="calendar.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="top-header">
+
+        <div class="logo">
+            RE:<span>WEAR</span>
+        </div>
+
+        <div class="tagline">
+            Rewear. Restyle. Repeat.
+        </div>
+
+    </header>
+
+
+    <!-- APP -->
+
+    <div class="app-container">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+
+                <strong>Your Re:Space</strong>
+
+                <button class="menu-button" id="menuButton">
+                    ☰
+                </button>
+
+            </div>
+
+
+            <nav class="navigation">
+
+                <button class="nav-item" data-page="wardrobe.html">
+
+                    <span class="nav-icon">♧</span>
+
+                    Wardrobe
+
+                </button>
+
+
+                <button class="nav-item" data-page="outfits.html">
+
+                    <span class="nav-icon">✧</span>
+
+                    Outfits
+
+                </button>
+
+
+                <button class="nav-item active" data-page="calendar.html">
+
+                    <span class="nav-icon">▣</span>
+
+                    Calendar
+
+                </button>
+
+
+                <button class="nav-item" data-page="shared-closet.html">
+
+                    <span class="nav-icon">♧</span>
+
+                    Shared Closet
+
+                </button>
+
+
+                <button class="nav-item" data-page="profile.html">
+
+                    <span class="nav-icon">◯</span>
+
+                    Profile
+
+                </button>
+
+            </nav>
+
+
+            <button class="sign-out" id="signOutButton">
+
+                ↪
+
+                <span>Sign Out</span>
+
+            </button>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <h1>
+                    CALENDAR
+                    <span>|</span>
+                    <em>WHEN YOU WORE WHAT</em>
+                </h1>
+
+
+                <button
+                    class="add-button"
+                    id="logOutfitButton"
+                >
+
+                    <span>+</span>
+
+                    Log Outfit
+
+                </button>
+
+            </div>
+
+
+            <!-- MONTH NAVIGATION -->
+
+            <div class="month-navigation">
+
+                <button
+                    class="month-arrow"
+                    id="previousMonth"
+                    aria-label="Previous month"
+                >
+                    ‹
+                </button>
+
+
+                <h2 id="monthTitle">
+                    August 2026
+                </h2>
+
+
+                <button
+                    class="month-arrow"
+                    id="nextMonth"
+                    aria-label="Next month"
+                >
+                    ›
+                </button>
+
+            </div>
+
+
+            <!-- CALENDAR -->
+
+            <section class="calendar-container">
+
+
+                <!-- DAYS OF WEEK -->
+
+                <div class="calendar-weekdays">
+
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                    <div>Sun</div>
+
+                </div>
+
+
+                <!-- CALENDAR DAYS -->
+
+                <div
+                    class="calendar-grid"
+                    id="calendarGrid"
+                ></div>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-links">
+
+            <span>About</span>
+
+            <span>Contact</span>
+
+            <span>Privacy Policy</span>
+
+        </div>
+
+
+        <div>
+            © 2026
+        </div>
+
+    </footer>
+
+
+    <!-- LOG OUTFIT MODAL -->
+
+    <div
+        class="modal-overlay"
+        id="modal"
+    >
+
+        <div class="modal">
+
+
+            <button
+                class="close-modal"
+                id="closeModal"
+            >
+                ×
+            </button>
+
+
+            <h2>Log Outfit</h2>
+
+
+            <p
+                class="selected-date"
+                id="selectedDate"
+            >
+                2026-08-15
+            </p>
+
+
+            <!-- OUTFIT SELECTION -->
+
+            <div
+                class="outfit-selection"
+                id="outfitSelection"
+            ></div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="no-outfits-message"
+                id="noOutfitsMessage"
+            >
+
+                <p>
+                    Create an outfit first in the Outfits page.
+                </p>
+
+                <button
+                    class="go-outfits-button"
+                    id="goOutfitsButton"
+                >
+                    Go to Outfits
+                </button>
+
+            </div>
+
+
+            <!-- LOG BUTTON -->
+
+            <button
+                class="modal-log-button"
+                id="confirmLogButton"
+            >
+                Log Outfit
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="calendar.js"></script>
+
+</body>
+
+</html>
