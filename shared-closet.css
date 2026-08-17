@@ -1,0 +1,790 @@
+/* =========================================================
+   RE:WEAR — SHARED CLOSET
+   ========================================================= */
+
+
+/* =========================
+   GENERAL
+   ========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: #f7f3ed;
+    color: #4b382f;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+.top-header {
+    height: 78px;
+    background: #faf8f4;
+    border-bottom: 1px solid #e5dfd6;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 53px;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 100;
+}
+
+.logo {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #3f2d25;
+}
+
+.tagline {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-size: 16px;
+    color: #8b817a;
+}
+
+
+/* =========================
+   PAGE LAYOUT
+   ========================= */
+
+.page-layout {
+    display: flex;
+    min-height: calc(100vh - 78px - 64px);
+
+    margin-top: 78px;
+    margin-bottom: 64px;
+}
+
+
+/* =========================
+   SIDEBAR
+   ========================= */
+
+.sidebar {
+    width: 294px;
+    background: #eee8dc;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    position: fixed;
+    top: 78px;
+    bottom: 64px;
+    left: 0;
+
+    padding: 30px 16px;
+}
+
+.sidebar-top {
+    width: 100%;
+}
+
+.space-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 13px 22px 13px;
+
+    font-size: 18px;
+    font-weight: 600;
+    color: #4b382f;
+}
+
+.menu-button {
+    background: transparent;
+    border: none;
+
+    font-size: 20px;
+    color: #756a62;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   NAVIGATION
+   ========================= */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nav-item {
+    height: 53px;
+
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 0 21px;
+
+    text-decoration: none;
+
+    color: #756a62;
+
+    font-size: 17px;
+
+    border-radius: 9px;
+
+    transition: 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.nav-item.active {
+    background: #493027;
+    color: white;
+}
+
+.nav-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 21px;
+}
+
+
+/* =========================
+   SIGN OUT
+   ========================= */
+
+.sign-out {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 0 21px;
+
+    height: 50px;
+
+    text-decoration: none;
+
+    color: #756a62;
+    font-size: 16px;
+}
+
+.sign-out-icon {
+    font-size: 23px;
+}
+
+
+/* =========================
+   MAIN CONTENT
+   ========================= */
+
+.main-content {
+    margin-left: 294px;
+
+    width: calc(100% - 294px);
+
+    padding: 56px 52px 70px;
+}
+
+.content-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+
+/* =========================
+   PAGE HEADING
+   ========================= */
+
+.page-heading {
+    margin-bottom: 31px;
+}
+
+.page-heading h1 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 31px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    color: #493027;
+
+    margin-bottom: 9px;
+}
+
+.page-heading h1 span {
+    color: #9b9189;
+    padding: 0 7px;
+}
+
+.page-heading p {
+    font-size: 17px;
+    line-height: 1.45;
+
+    color: #756a62;
+
+    max-width: 900px;
+}
+
+
+/* =========================
+   TABS
+   ========================= */
+
+.tabs {
+    width: 425px;
+    height: 58px;
+
+    background: #f1ede6;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    padding: 4px;
+
+    margin-bottom: 36px;
+}
+
+.tab-button {
+    flex: 1;
+
+    border: none;
+    background: transparent;
+
+    border-radius: 8px;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 17px;
+    color: #756a62;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.tab-button:hover {
+    color: #493027;
+}
+
+.tab-button.active {
+    background: #493027;
+    color: white;
+
+    box-shadow: 0 2px 5px rgba(60, 40, 30, 0.12);
+}
+
+
+/* =========================
+   TAB CONTENT
+   ========================= */
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+
+/* =========================
+   BROWSE GRID
+   ========================= */
+
+.clothing-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+
+    gap: 28px;
+
+    align-items: start;
+}
+
+
+/* =========================
+   CLOTHING CARD
+   ========================= */
+
+.clothing-card {
+    background: white;
+
+    border: 1px solid #e6dfd6;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 6px rgba(60, 40, 30, 0.05);
+
+    max-width: 330px;
+}
+
+
+/* Image */
+
+.clothing-image-container {
+    width: 100%;
+    height: 365px;
+
+    background: #eee9df;
+
+    overflow: hidden;
+}
+
+.clothing-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* Card information */
+
+.clothing-information {
+    padding: 20px 21px 21px;
+}
+
+.clothing-name {
+    font-size: 18px;
+    font-weight: 600;
+
+    line-height: 1.35;
+
+    color: #4b382f;
+
+    margin-bottom: 7px;
+}
+
+.clothing-details {
+    font-size: 15px;
+
+    color: #7b716a;
+
+    line-height: 1.5;
+
+    margin-bottom: 18px;
+}
+
+
+/* Request button */
+
+.request-button {
+    width: 100%;
+    height: 44px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #493027;
+    color: white;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.request-button:hover {
+    background: #38231d;
+}
+
+.request-button.requested {
+    background: #a59d96;
+    cursor: default;
+}
+
+
+/* =========================
+   EMPTY BROWSE
+   ========================= */
+
+.empty-state {
+    background: white;
+
+    border: 1px solid #e5dfd6;
+
+    border-radius: 14px;
+
+    min-height: 205px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+.empty-state p,
+.large-empty-state p {
+    font-family: "Playfair Display", serif;
+
+    font-size: 20px;
+
+    font-style: italic;
+
+    color: #8b817a;
+}
+
+
+/* =========================
+   LARGE EMPTY STATES
+   ========================= */
+
+.large-empty-state {
+    background: white;
+
+    border: 1px solid #e5dfd6;
+
+    border-radius: 14px;
+
+    min-height: 205px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* =========================
+   MY REQUESTS
+   ========================= */
+
+.my-requests-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+/* Request row */
+
+.my-request-card {
+    width: 100%;
+    min-height: 112px;
+
+    background: white;
+
+    border: 1px solid #e5dfd6;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 20px;
+
+    box-shadow: 0 2px 5px rgba(60, 40, 30, 0.04);
+}
+
+
+/* Small image */
+
+.request-image {
+    width: 84px;
+    height: 84px;
+
+    border-radius: 9px;
+
+    object-fit: cover;
+
+    background: #eee9df;
+
+    margin-right: 21px;
+}
+
+
+/* Request text */
+
+.request-info {
+    flex: 1;
+}
+
+.request-name {
+    font-size: 18px;
+    font-weight: 600;
+
+    color: #4b382f;
+
+    margin-bottom: 5px;
+}
+
+.request-description {
+    font-size: 15px;
+
+    color: #7b716a;
+}
+
+
+/* Status */
+
+.request-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 15px;
+
+    color: #c76512;
+
+    margin-left: 20px;
+}
+
+.status-icon {
+    font-size: 18px;
+}
+
+
+/* =========================
+   INCOMING REQUESTS
+   ========================= */
+
+.requests-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.incoming-request-card {
+    width: 100%;
+
+    background: white;
+
+    border: 1px solid #e5dfd6;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+}
+
+.incoming-image {
+    width: 84px;
+    height: 84px;
+
+    object-fit: cover;
+
+    border-radius: 9px;
+
+    margin-right: 20px;
+}
+
+.incoming-info {
+    flex: 1;
+}
+
+.incoming-name {
+    font-size: 18px;
+    font-weight: 600;
+
+    color: #4b382f;
+
+    margin-bottom: 5px;
+}
+
+.incoming-description {
+    font-size: 15px;
+    color: #7b716a;
+}
+
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.footer {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 64px;
+
+    background: #777571;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 53px;
+
+    z-index: 100;
+}
+
+.footer-left {
+    display: flex;
+    gap: 31px;
+}
+
+.footer a {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 15px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.copyright {
+    font-size: 15px;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 230px;
+    }
+
+    .main-content {
+        margin-left: 230px;
+        width: calc(100% - 230px);
+
+        padding: 45px 30px 70px;
+    }
+
+    .page-heading h1 {
+        font-size: 26px;
+    }
+
+    .tabs {
+        width: 100%;
+        max-width: 425px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .top-header {
+        padding: 0 25px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .tagline {
+        display: none;
+    }
+
+    .sidebar {
+        position: relative;
+
+        top: auto;
+        bottom: auto;
+        left: auto;
+
+        width: 100%;
+
+        height: auto;
+
+        padding: 20px;
+
+        display: block;
+    }
+
+    .sidebar-bottom {
+        margin-top: 20px;
+    }
+
+    .page-layout {
+        display: block;
+        margin-top: 78px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+
+        padding: 35px 20px 90px;
+    }
+
+    .navigation {
+        gap: 3px;
+    }
+
+    .nav-item {
+        height: 45px;
+    }
+
+    .footer {
+        padding: 0 20px;
+    }
+
+    .footer-left {
+        gap: 15px;
+    }
+
+    .footer-left a {
+        font-size: 13px;
+    }
+
+    .copyright {
+        font-size: 13px;
+    }
+
+    .clothing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .clothing-card {
+        max-width: 100%;
+    }
+
+    .my-request-card,
+    .incoming-request-card {
+        flex-wrap: wrap;
+    }
+
+    .request-status {
+        width: 100%;
+        margin-left: 105px;
+        margin-top: 12px;
+    }
+
+}
