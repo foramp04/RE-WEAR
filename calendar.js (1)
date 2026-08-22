@@ -1,0 +1,1038 @@
+// =========================================================
+// RE:WEAR CALENDAR
+// =========================================================
+
+// KEEP THESE KEYS THE SAME!
+// They connect to your existing localStorage.
+const OUTFITS_KEY = "rewearOutfits";
+const CALENDAR_KEY = "rewearCalendar";
+
+
+// =========================================================
+// STATE
+// =========================================================
+
+let outfits = [];
+let loggedOutfits = [];
+
+let currentDate = new Date();
+
+
+// =========================================================
+// ELEMENTS
+// =========================================================
+
+const calendarGrid =
+    document.getElementById("calendarGrid");
+
+const calendarEmpty =
+    document.getElementById("calendarEmpty");
+
+const logButton =
+    document.getElementById("logOutfitButton");
+
+const logModal =
+    document.getElementById("logModal");
+
+const closeButton =
+    document.getElementById("closeLogModal");
+
+const outfitSelect =
+    document.getElementById("outfitSelect");
+
+const outfitDate =
+    document.getElementById("outfitDate");
+
+const saveLogButton =
+    document.getElementById("saveLogButton");
+
+const calendarError =
+    document.getElementById("calendarError");
+
+const navItems =
+    document.querySelectorAll(".nav-item");
+
+
+// =========================================================
+// LOAD DATA FROM LOCAL STORAGE
+// =========================================================
+
+function loadData() {
+
+    try {
+
+        outfits =
+            JSON.parse(
+                localStorage.getItem(OUTFITS_KEY)
+            ) || [];
+
+    } catch (error) {
+
+        console.error(
+            "Could not load outfits:",
+            error
+        );
+
+        outfits = [];
+
+    }
+
+
+    try {
+
+        loggedOutfits =
+            JSON.parse(
+                localStorage.getItem(CALENDAR_KEY)
+            ) || [];
+
+    } catch (error) {
+
+        console.error(
+            "Could not load calendar:",
+            error
+        );
+
+        loggedOutfits = [];
+
+    }
+
+
+    renderCalendar();
+
+}
+
+
+// =========================================================
+// SAVE CALENDAR
+// =========================================================
+
+function saveCalendar() {
+
+    localStorage.setItem(
+        CALENDAR_KEY,
+        JSON.stringify(loggedOutfits)
+    );
+
+}
+
+
+// =========================================================
+// CALENDAR RENDERING
+// =========================================================
+
+function renderCalendar() {
+
+    calendarGrid.innerHTML = "";
+
+
+    // Hide the old empty message.
+    // We still show the calendar even if nothing
+    // has been logged yet.
+    if (calendarEmpty) {
+
+        calendarEmpty.style.display = "none";
+
+    }
+
+
+    // -----------------------------------------------------
+    // CALENDAR HEADER
+    // -----------------------------------------------------
+
+    const calendarHeader =
+        document.createElement("div");
+
+    calendarHeader.className =
+        "calendar-header";
+
+
+    const previousButton =
+        document.createElement("button");
+
+    previousButton.className =
+        "month-arrow";
+
+    previousButton.innerHTML = "‹";
+
+    previousButton.setAttribute(
+        "aria-label",
+        "Previous month"
+    );
+
+
+    const monthTitle =
+        document.createElement("h2");
+
+    monthTitle.className =
+        "month-title";
+
+    monthTitle.textContent =
+        currentDate.toLocaleDateString(
+            "en-NZ",
+            {
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    const nextButton =
+        document.createElement("button");
+
+    nextButton.className =
+        "month-arrow";
+
+    nextButton.innerHTML = "›";
+
+    nextButton.setAttribute(
+        "aria-label",
+        "Next month"
+    );
+
+
+    previousButton.addEventListener(
+        "click",
+        () => {
+
+            currentDate.setMonth(
+                currentDate.getMonth() - 1
+            );
+
+            renderCalendar();
+
+        }
+    );
+
+
+    nextButton.addEventListener(
+        "click",
+        () => {
+
+            currentDate.setMonth(
+                currentDate.getMonth() + 1
+            );
+
+            renderCalendar();
+
+        }
+    );
+
+
+    calendarHeader.appendChild(
+        previousButton
+    );
+
+    calendarHeader.appendChild(
+        monthTitle
+    );
+
+    calendarHeader.appendChild(
+        nextButton
+    );
+
+
+    calendarGrid.appendChild(
+        calendarHeader
+    );
+
+
+    // -----------------------------------------------------
+    // WEEKDAYS
+    // -----------------------------------------------------
+
+    const weekdays =
+        document.createElement("div");
+
+    weekdays.className =
+        "calendar-weekdays";
+
+
+    const weekdayNames = [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+    ];
+
+
+    weekdayNames.forEach(day => {
+
+        const weekday =
+            document.createElement("div");
+
+        weekday.className =
+            "weekday";
+
+        weekday.textContent =
+            day;
+
+        weekdays.appendChild(
+            weekday
+        );
+
+    });
+
+
+    calendarGrid.appendChild(
+        weekdays
+    );
+
+
+    // -----------------------------------------------------
+    // MONTH GRID
+    // -----------------------------------------------------
+
+    const monthGrid =
+        document.createElement("div");
+
+    monthGrid.className =
+        "month-grid";
+
+
+    const year =
+        currentDate.getFullYear();
+
+    const month =
+        currentDate.getMonth();
+
+
+    // First day of the month
+    const firstDay =
+        new Date(
+            year,
+            month,
+            1
+        );
+
+
+    // Convert Sunday = 0 into
+    // Monday = 0
+    let startingDay =
+        firstDay.getDay() - 1;
+
+    if (startingDay < 0) {
+        startingDay = 6;
+    }
+
+
+    // Number of days in the month
+    const daysInMonth =
+        new Date(
+            year,
+            month + 1,
+            0
+        ).getDate();
+
+
+    // Number of days in previous month
+    const daysInPreviousMonth =
+        new Date(
+            year,
+            month,
+            0
+        ).getDate();
+
+
+    // -----------------------------------------------------
+    // PREVIOUS MONTH DAYS
+    // -----------------------------------------------------
+
+    for (
+        let i = startingDay - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const dayNumber =
+            daysInPreviousMonth - i;
+
+        const previousMonth =
+            month === 0
+                ? 11
+                : month - 1;
+
+        const previousYear =
+            month === 0
+                ? year - 1
+                : year;
+
+
+        createCalendarDay(
+            dayNumber,
+            previousYear,
+            previousMonth,
+            true,
+            monthGrid
+        );
+
+    }
+
+
+    // -----------------------------------------------------
+    // CURRENT MONTH DAYS
+    // -----------------------------------------------------
+
+    for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+    ) {
+
+        createCalendarDay(
+            day,
+            year,
+            month,
+            false,
+            monthGrid
+        );
+
+    }
+
+
+    // -----------------------------------------------------
+    // NEXT MONTH DAYS
+    // -----------------------------------------------------
+
+    const totalCells =
+        startingDay + daysInMonth;
+
+    const remainingCells =
+        totalCells <= 35
+            ? 35 - totalCells
+            : 42 - totalCells;
+
+
+    for (
+        let day = 1;
+        day <= remainingCells;
+        day++
+    ) {
+
+        const nextMonth =
+            month === 11
+                ? 0
+                : month + 1;
+
+        const nextYear =
+            month === 11
+                ? year + 1
+                : year;
+
+
+        createCalendarDay(
+            day,
+            nextYear,
+            nextMonth,
+            true,
+            monthGrid
+        );
+
+    }
+
+
+    calendarGrid.appendChild(
+        monthGrid
+    );
+
+}
+
+
+// =========================================================
+// CREATE INDIVIDUAL CALENDAR DAY
+// =========================================================
+
+function createCalendarDay(
+    dayNumber,
+    year,
+    month,
+    isOtherMonth,
+    container
+) {
+
+    const dayCell =
+        document.createElement("div");
+
+    dayCell.className =
+        "calendar-day";
+
+
+    if (isOtherMonth) {
+
+        dayCell.classList.add(
+            "other-month"
+        );
+
+    }
+
+
+    // -----------------------------------------------------
+    // DATE
+    // -----------------------------------------------------
+
+    const dateString =
+        createDateString(
+            year,
+            month,
+            dayNumber
+        );
+
+
+    const dateNumber =
+        document.createElement("div");
+
+    dateNumber.className =
+        "date-number";
+
+    dateNumber.textContent =
+        dayNumber;
+
+
+    dayCell.appendChild(
+        dateNumber
+    );
+
+
+    // -----------------------------------------------------
+    // TODAY
+    // -----------------------------------------------------
+
+    const today =
+        new Date();
+
+    const todayString =
+        createDateString(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        );
+
+
+    if (dateString === todayString) {
+
+        dayCell.classList.add(
+            "today"
+        );
+
+    }
+
+
+    // -----------------------------------------------------
+    // OUTFITS ALREADY LOGGED ON THIS DATE
+    // -----------------------------------------------------
+
+    const logsForThisDate =
+        loggedOutfits.filter(
+            log =>
+                log.date === dateString
+        );
+
+
+    logsForThisDate.forEach(log => {
+
+        const outfitTag =
+            document.createElement("div");
+
+        outfitTag.className =
+            "calendar-outfit";
+
+
+        outfitTag.textContent =
+            log.outfitName;
+
+
+        outfitTag.title =
+            log.outfitName;
+
+
+        const removeButton =
+            document.createElement("button");
+
+        removeButton.className =
+            "remove-outfit";
+
+        removeButton.innerHTML =
+            "×";
+
+        removeButton.setAttribute(
+            "aria-label",
+            `Remove ${log.outfitName}`
+        );
+
+
+        removeButton.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                removeLog(log.id);
+
+            }
+        );
+
+
+        outfitTag.appendChild(
+            removeButton
+        );
+
+
+        dayCell.appendChild(
+            outfitTag
+        );
+
+    });
+
+
+    // -----------------------------------------------------
+    // ADD BUTTON
+    // -----------------------------------------------------
+
+    const addButton =
+        document.createElement("button");
+
+    addButton.className =
+        "day-add-button";
+
+    addButton.innerHTML = `
+        <span>+</span>
+    `;
+
+    addButton.title =
+        `Log outfit on ${formatDate(dateString)}`;
+
+
+    addButton.addEventListener(
+        "click",
+        event => {
+
+            event.stopPropagation();
+
+            openLogModal(
+                dateString
+            );
+
+        }
+    );
+
+
+    dayCell.appendChild(
+        addButton
+    );
+
+
+    container.appendChild(
+        dayCell
+    );
+
+}
+
+
+// =========================================================
+// CREATE YYYY-MM-DD DATE
+// =========================================================
+
+function createDateString(
+    year,
+    month,
+    day
+) {
+
+    const realMonth =
+        String(month + 1)
+            .padStart(2, "0");
+
+    const realDay =
+        String(day)
+            .padStart(2, "0");
+
+
+    return `${year}-${realMonth}-${realDay}`;
+
+}
+
+
+// =========================================================
+// OPEN LOG MODAL
+// =========================================================
+
+function openLogModal(
+    selectedDate = null
+) {
+
+    calendarError.textContent = "";
+
+
+    // Make sure outfits are available
+    if (outfits.length === 0) {
+
+        alert(
+            "You need to create an outfit on the Outfits page before you can log one on the Calendar."
+        );
+
+        window.location.href =
+            "outfits.html";
+
+        return;
+
+    }
+
+
+    // Clear old options
+    outfitSelect.innerHTML = `
+        <option value="">
+            Select an outfit
+        </option>
+    `;
+
+
+    // Load outfits from localStorage
+    outfits.forEach(outfit => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            outfit.id;
+
+        option.textContent =
+            outfit.name;
+
+        outfitSelect.appendChild(
+            option
+        );
+
+    });
+
+
+    // If a date was clicked,
+    // use that date.
+    // Otherwise use today.
+    if (selectedDate) {
+
+        outfitDate.value =
+            selectedDate;
+
+    } else {
+
+        const today =
+            new Date();
+
+        outfitDate.value =
+            createDateString(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate()
+            );
+
+    }
+
+
+    outfitSelect.value = "";
+
+
+    logModal.classList.add(
+        "open"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+// =========================================================
+// CLOSE MODAL
+// =========================================================
+
+function closeLogModal() {
+
+    logModal.classList.remove(
+        "open"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+// =========================================================
+// MAIN LOG OUTFIT BUTTON
+// =========================================================
+
+logButton.addEventListener(
+    "click",
+    () => {
+
+        openLogModal();
+
+    }
+);
+
+
+// =========================================================
+// CLOSE BUTTON
+// =========================================================
+
+closeButton.addEventListener(
+    "click",
+    closeLogModal
+);
+
+
+// =========================================================
+// CLICK OUTSIDE MODAL
+// =========================================================
+
+logModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            logModal
+        ) {
+
+            closeLogModal();
+
+        }
+
+    }
+);
+
+
+// =========================================================
+// ESCAPE KEY
+// =========================================================
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape" &&
+            logModal.classList.contains("open")
+        ) {
+
+            closeLogModal();
+
+        }
+
+    }
+);
+
+
+// =========================================================
+// SAVE OUTFIT LOG
+// =========================================================
+
+saveLogButton.addEventListener(
+    "click",
+    () => {
+
+        const date =
+            outfitDate.value;
+
+        const outfitId =
+            outfitSelect.value;
+
+
+        // Validate
+        if (
+            !date ||
+            !outfitId
+        ) {
+
+            calendarError.textContent =
+                "Please select a date and outfit.";
+
+            return;
+
+        }
+
+
+        // Find the outfit from
+        // the existing Outfits data
+        const outfit =
+            outfits.find(
+                item =>
+                    item.id === outfitId
+            );
+
+
+        if (!outfit) {
+
+            calendarError.textContent =
+                "That outfit could not be found.";
+
+            return;
+
+        }
+
+
+        // Create calendar log
+        const newLog = {
+
+            id:
+                crypto.randomUUID(),
+
+            outfitId:
+                outfitId,
+
+            outfitName:
+                outfit.name,
+
+            date:
+                date,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        // Add it to existing logs
+        loggedOutfits.push(
+            newLog
+        );
+
+
+        // Save to the SAME localStorage key
+        saveCalendar();
+
+
+        // Close modal
+        closeLogModal();
+
+
+        // Re-render calendar
+        renderCalendar();
+
+    }
+);
+
+
+// =========================================================
+// REMOVE LOGGED OUTFIT
+// =========================================================
+
+function removeLog(id) {
+
+    const log =
+        loggedOutfits.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!log) return;
+
+
+    const confirmed =
+        confirm(
+            `Remove "${log.outfitName}" from your calendar?`
+        );
+
+
+    if (!confirmed) return;
+
+
+    loggedOutfits =
+        loggedOutfits.filter(
+            item =>
+                item.id !== id
+        );
+
+
+    saveCalendar();
+
+    renderCalendar();
+
+}
+
+
+// =========================================================
+// FORMAT DATE
+// =========================================================
+
+function formatDate(date) {
+
+    return new Date(
+        date + "T00:00:00"
+    ).toLocaleDateString(
+        "en-NZ",
+        {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+// =========================================================
+// SECURITY
+// =========================================================
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+// =========================================================
+// NAVIGATION
+// =========================================================
+
+navItems.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            const page =
+                button.dataset.page;
+
+            if (page) {
+
+                window.location.href =
+                    page;
+
+            }
+
+        }
+    );
+
+});
+
+
+// =========================================================
+// START
+// =========================================================
+
+loadData();
