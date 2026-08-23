@@ -1,0 +1,735 @@
+import {auth} from "./firebase.js";
+import {
+    getUserData,
+    saveUserData,
+    waitForCurrentUser
+} from "./storage.js";
+
+
+const browseGrid =
+    document.getElementById("browseGrid");
+
+const browseEmpty =
+    document.getElementById("browseEmpty");
+
+const requestsList =
+    document.getElementById("requestsList");
+
+const requestsEmpty =
+    document.getElementById("requestsEmpty");
+
+const myRequestsList =
+    document.getElementById("myRequestsList");
+
+const myRequestsEmpty =
+    document.getElementById("myRequestsEmpty");
+
+
+const tabs =
+    document.querySelectorAll(".shared-tab");
+
+const sections =
+    document.querySelectorAll(
+        ".shared-tab-content"
+    );
+
+
+const requestModal =
+    document.getElementById(
+        "requestModal"
+    );
+
+const closeRequestModal =
+    document.getElementById(
+        "closeRequestModal"
+    );
+
+const confirmRequest =
+    document.getElementById(
+        "confirmRequest"
+    );
+
+const requestItemPreview =
+    document.getElementById(
+        "requestItemPreview"
+    );
+
+
+const navItems =
+    document.querySelectorAll(".nav-item");
+
+
+let selectedItem = null;
+
+
+// data
+
+function getWardrobe() {
+
+    return getUserData(
+        "wardrobe",
+        []
+    );
+
+}
+
+
+function getRequests() {
+
+    return getUserData(
+        "requests",
+        []
+    );
+
+}
+
+
+function saveRequests(requests) {
+
+    saveUserData(
+        "requests",
+        requests
+    );
+
+}
+
+
+// user
+
+let currentUser = null;
+
+
+// tabs
+
+tabs.forEach(tab => {
+
+    tab.addEventListener(
+        "click",
+        () => {
+
+            const target =
+                tab.dataset.tab;
+
+
+            tabs.forEach(
+                button =>
+                    button.classList.remove(
+                        "active"
+                    )
+            );
+
+
+            sections.forEach(
+                section =>
+                    section.classList.remove(
+                        "active"
+                    )
+            );
+
+
+            tab.classList.add(
+                "active"
+            );
+
+
+            const section =
+                document.getElementById(
+                    target === "browse"
+                        ? "browseTab"
+                        : target === "requests"
+                        ? "requestsTab"
+                        : "myRequestsTab"
+                );
+
+
+            if (section) {
+
+                section.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            if (target === "browse") {
+
+                renderBrowse();
+
+            }
+
+            if (target === "requests") {
+
+                renderIncomingRequests();
+
+            }
+
+            if (
+                target ===
+                "my-requests"
+            ) {
+
+                renderMyRequests();
+
+            }
+
+        }
+    );
+
+});
+
+
+// browse tab
+
+function renderBrowse() {
+
+    browseGrid.innerHTML = "";
+
+
+    const wardrobe =
+        getWardrobe();
+
+
+    const donatedItems =
+        wardrobe.filter(
+            item =>
+                item.destination ===
+                "donate"
+        );
+
+
+    const requests =
+        getRequests();
+
+
+    if (
+        donatedItems.length === 0
+    ) {
+
+        browseGrid.style.display =
+            "none";
+
+        browseEmpty.style.display =
+            "flex";
+
+        return;
+
+    }
+
+
+    browseGrid.style.display =
+        "grid";
+
+    browseEmpty.style.display =
+        "none";
+
+
+    donatedItems.forEach(item => {
+
+        const requested =
+            requests.some(
+                request =>
+                    request.itemId ===
+                        item.id &&
+                    request.requester ===
+                        currentUser
+            );
+
+
+        const card =
+            document.createElement("article");
+
+
+        card.className =
+            "shared-item-card";
+
+
+        card.innerHTML = `
+
+            <div class="shared-image-wrapper">
+
+                <img
+                    src="${item.image}"
+                    class="shared-item-image"
+                    alt="${escapeHTML(item.name)}"
+                >
+
+            </div>
+
+
+            <div class="shared-item-info">
+
+                <h3>
+                    ${escapeHTML(item.name)}
+                </h3>
+
+
+                <p>
+
+                    ${escapeHTML(item.category)}
+
+                    ${
+                        item.color
+                            ? " • " +
+                              escapeHTML(item.color)
+                            : ""
+                    }
+
+                </p>
+
+
+                <button
+                    class="request-button ${
+                        requested
+                            ? "requested"
+                            : ""
+                    }"
+                    ${
+                        requested
+                            ? "disabled"
+                            : ""
+                    }
+                >
+
+                    ${
+                        requested
+                            ? "Request sent ✓"
+                            : "Request item"
+                    }
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        if (!requested) {
+
+            card
+                .querySelector(
+                    ".request-button"
+                )
+                .addEventListener(
+                    "click",
+                    () =>
+                        openRequestModal(
+                            item
+                        )
+                );
+
+        }
+
+
+        browseGrid.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+// request pop-up
+
+function openRequestModal(item) {
+
+    selectedItem = item;
+
+
+    requestItemPreview.innerHTML = `
+
+        <div class="modal-item-preview">
+
+            <img
+                src="${item.image}"
+                alt="${escapeHTML(item.name)}"
+            >
+
+            <div>
+
+                <strong>
+                    ${escapeHTML(item.name)}
+                </strong>
+
+                <p>
+                    ${escapeHTML(item.category)}
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    requestModal.classList.add(
+        "open"
+    );
+
+}
+
+
+function closeModal() {
+
+    requestModal.classList.remove(
+        "open"
+    );
+
+    selectedItem = null;
+
+}
+
+
+closeRequestModal.addEventListener(
+    "click",
+    closeModal
+);
+
+
+requestModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            requestModal
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+// send request
+
+confirmRequest.addEventListener(
+    "click",
+    () => {
+
+        if (!selectedItem) return;
+
+
+        const requests =
+            getRequests();
+
+
+        const alreadyRequested =
+            requests.some(
+                request =>
+                    request.itemId ===
+                        selectedItem.id &&
+                    request.requester ===
+                        currentUser
+            );
+
+
+        if (alreadyRequested) {
+
+            closeModal();
+
+            return;
+
+        }
+
+
+        requests.push({
+
+            id:
+                crypto.randomUUID(),
+
+            itemId:
+                selectedItem.id,
+
+            itemName:
+                selectedItem.name,
+
+            image:
+                selectedItem.image,
+
+            owner:
+                selectedItem.owner ||
+                "Owner",
+
+            requester:
+                currentUser,
+
+            status:
+                "awaiting",
+
+            date:
+                new Date().toISOString()
+
+        });
+
+
+        saveRequests(
+            requests
+        );
+
+
+        closeModal();
+
+
+        renderBrowse();
+
+        switchToTab(
+            "my-requests"
+        );
+
+    }
+);
+
+
+// my requests tab
+
+function renderMyRequests() {
+
+    myRequestsList.innerHTML = "";
+
+
+    const requests =
+        getRequests();
+
+
+    const mine =
+        requests.filter(
+            request =>
+                request.requester ===
+                currentUser
+        );
+
+
+    if (mine.length === 0) {
+
+        myRequestsList.style.display =
+            "none";
+
+        myRequestsEmpty.style.display =
+            "flex";
+
+        return;
+
+    }
+
+
+    myRequestsList.style.display =
+        "flex";
+
+    myRequestsEmpty.style.display =
+        "none";
+
+
+    mine.forEach(request => {
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+
+        card.className =
+            "my-request-card";
+
+
+        card.innerHTML = `
+
+            <img
+                src="${request.image}"
+                alt="${escapeHTML(request.itemName)}"
+            >
+
+
+            <div class="request-info">
+
+                <h3>
+                    ${escapeHTML(request.itemName)}
+                </h3>
+
+                <p>
+                    Your request has been sent to the owner.
+                </p>
+
+                <span class="awaiting">
+
+                    <span class="material-symbols-outlined">
+                        schedule
+                    </span>
+
+                    Awaiting response
+
+                </span>
+
+            </div>
+
+        `;
+
+
+        myRequestsList.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+// incoming requests tab
+
+function renderIncomingRequests() {
+
+    requestsList.innerHTML = "";
+
+
+    const requests =
+        getRequests();
+
+
+    const incoming =
+        requests.filter(
+            request =>
+                request.owner ===
+                currentUser
+        );
+
+
+    if (incoming.length === 0) {
+
+        requestsList.style.display =
+            "none";
+
+        requestsEmpty.style.display =
+            "flex";
+
+        return;
+
+    }
+
+
+    requestsList.style.display =
+        "flex";
+
+    requestsEmpty.style.display =
+        "none";
+
+
+    incoming.forEach(request => {
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+
+        card.className =
+            "incoming-request-card";
+
+
+        card.innerHTML = `
+
+            <img
+                src="${request.image}"
+                alt="${escapeHTML(request.itemName)}"
+            >
+
+
+            <div>
+
+                <h3>
+                    ${escapeHTML(request.itemName)}
+                </h3>
+
+                <p>
+                    Someone has requested this piece.
+                </p>
+
+                <span class="awaiting">
+                    Awaiting response
+                </span>
+
+            </div>
+
+        `;
+
+
+        requestsList.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+// tab navigation
+
+function switchToTab(tabName) {
+
+    const tab =
+        document.querySelector(
+            `.shared-tab[data-tab="${tabName}"]`
+        );
+
+
+    if (tab) {
+
+        tab.click();
+
+    }
+
+}
+
+
+// navigation
+
+navItems.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                button.dataset.page;
+
+        }
+    );
+
+});
+
+
+// security
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+waitForCurrentUser().then(user => {
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+    currentUser =
+        user.uid;
+
+    renderBrowse();
+
+    renderMyRequests();
+
+    renderIncomingRequests();
+
+});
