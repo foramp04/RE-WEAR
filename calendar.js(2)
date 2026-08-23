@@ -1,0 +1,394 @@
+import {
+    getUserData,
+    saveUserData,
+    waitForCurrentUser
+} from "./storage.js";
+
+
+let outfits = [];
+
+let loggedOutfits = [];
+
+
+const calendarGrid =
+    document.getElementById("calendarGrid");
+
+const calendarEmpty =
+    document.getElementById("calendarEmpty");
+
+const logButton =
+    document.getElementById("logOutfitButton");
+
+const logModal =
+    document.getElementById("logModal");
+
+const closeButton =
+    document.getElementById("closeLogModal");
+
+const outfitSelect =
+    document.getElementById("outfitSelect");
+
+const outfitDate =
+    document.getElementById("outfitDate");
+
+const saveLogButton =
+    document.getElementById("saveLogButton");
+
+const calendarError =
+    document.getElementById("calendarError");
+
+const navItems =
+    document.querySelectorAll(".nav-item");
+
+
+// load data
+
+function loadData() {
+
+    outfits =
+        getUserData(
+            "outfits",
+            []
+        );
+
+    loggedOutfits =
+        getUserData(
+            "calendar",
+            []
+        );
+
+    renderCalendar();
+
+}
+
+
+// modal open/close
+
+logButton.addEventListener(
+    "click",
+    openLogModal
+);
+
+
+closeButton.addEventListener(
+    "click",
+    closeLogModal
+);
+
+
+function openLogModal() {
+
+    calendarError.textContent = "";
+
+
+    if (outfits.length === 0) {
+
+        alert(
+            "You need to create an outfit on the Outfits page before you can log one on the Calendar."
+        );
+
+        window.location.href =
+            "outfits.html";
+
+        return;
+
+    }
+
+
+    outfitSelect.innerHTML = `
+        <option value="">
+            Select an outfit
+        </option>
+    `;
+
+
+    outfits.forEach(outfit => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            outfit.id;
+
+        option.textContent =
+            outfit.name;
+
+        outfitSelect.appendChild(
+            option
+        );
+
+    });
+
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    outfitDate.value =
+        today;
+
+
+    logModal.classList.add(
+        "open"
+    );
+
+}
+
+
+function closeLogModal() {
+
+    logModal.classList.remove(
+        "open"
+    );
+
+}
+
+
+logModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            logModal
+        ) {
+
+            closeLogModal();
+
+        }
+
+    }
+);
+
+
+// save items
+
+saveLogButton.addEventListener(
+    "click",
+    () => {
+
+        const date =
+            outfitDate.value;
+
+        const outfitId =
+            outfitSelect.value;
+
+
+        if (!date || !outfitId) {
+
+            calendarError.textContent =
+                "Please select a date and outfit.";
+
+            return;
+
+        }
+
+
+        const outfit =
+            outfits.find(
+                item =>
+                    item.id === outfitId
+            );
+
+
+        if (!outfit) return;
+
+
+        loggedOutfits.push({
+
+            id:
+                crypto.randomUUID(),
+
+            outfitId,
+
+            outfitName:
+                outfit.name,
+
+            date,
+
+            createdAt:
+                new Date().toISOString()
+
+        });
+
+
+        saveUserData(
+             "calendar",
+             loggedOutfits
+            );
+
+
+        closeLogModal();
+
+        renderCalendar();
+
+    }
+);
+
+function renderCalendar() {
+
+    calendarGrid.innerHTML = "";
+
+
+    if (loggedOutfits.length === 0) {
+
+        calendarGrid.style.display =
+            "none";
+
+        calendarEmpty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    calendarGrid.style.display =
+        "grid";
+
+    calendarEmpty.style.display =
+        "none";
+
+
+    const sorted =
+        [...loggedOutfits].sort(
+            (a, b) =>
+                new Date(b.date) -
+                new Date(a.date)
+        );
+
+
+    sorted.forEach(log => {
+
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "calendar-card";
+
+
+        card.innerHTML = `
+
+            <div class="calendar-card-date">
+
+                <span class="material-symbols-outlined">
+                    calendar_month
+                </span>
+
+                ${formatDate(log.date)}
+
+            </div>
+
+
+            <h3>
+                ${escapeHTML(log.outfitName)}
+            </h3>
+
+
+            <button
+                class="delete-log"
+                data-id="${log.id}"
+            >
+                Remove
+            </button>
+
+        `;
+
+
+        calendarGrid.appendChild(card);
+
+    });
+
+
+    document
+        .querySelectorAll(".delete-log")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    loggedOutfits =
+                        loggedOutfits.filter(
+                            log =>
+                                log.id !==
+                                button.dataset.id
+                        );
+
+
+                    saveUserData(
+                        "calendar",
+                        loggedOutfits
+                    );
+
+
+                    renderCalendar();
+
+                }
+            );
+
+        });
+
+}
+
+
+function formatDate(date) {
+
+    return new Date(
+        date + "T00:00:00"
+    ).toLocaleDateString(
+        "en-NZ",
+        {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// navigation
+
+navItems.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                button.dataset.page;
+
+        }
+    );
+
+});
+
+waitForCurrentUser().then(user => {
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+    loadData();
+
+});
