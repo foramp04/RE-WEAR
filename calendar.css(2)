@@ -1,0 +1,483 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+:root {
+    --cream: #f7f4ec;
+    --brown: #3b2923;
+    --brown-light: #68544b;
+    --border: #ddd8cd;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+
+    background: var(--cream);
+
+    color: var(--brown);
+
+    font-family: "DM Sans", sans-serif;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.top-header {
+    min-height: 92px;
+
+    background: white;
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 48px;
+}
+
+.logo {
+    font-family: "Playfair Display", serif;
+
+    font-size: 32px;
+
+    letter-spacing: 2px;
+}
+
+.tagline {
+    color: var(--brown-light);
+
+    font-style: italic;
+
+    letter-spacing: 2px;
+}
+
+.app-container {
+    flex: 1;
+
+    display: flex;
+}
+
+.sidebar {
+    width: 285px;
+
+    flex-shrink: 0;
+
+    background: #eae5d7;
+
+    padding: 28px 20px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.sidebar-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 30px;
+
+    font-size: 20px;
+}
+
+.menu-button {
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.navigation {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.nav-item,
+.sign-out {
+    border: none;
+
+    background: transparent;
+
+    color: #665952;
+
+    padding: 13px 16px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+.nav-item {
+    width: 100%;
+
+    text-align: left;
+}
+
+.nav-item:hover,
+.sign-out:hover {
+    background: rgba(59, 41, 35, 0.08);
+}
+
+.nav-item.active {
+    background: var(--brown);
+
+    color: white;
+}
+
+.sign-out {
+    margin-top: auto;
+
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+
+    padding: 55px;
+
+    overflow-y: auto;
+}
+
+.page-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 30px;
+
+    letter-spacing: 2px;
+}
+
+h1 span {
+    color: #aaa;
+
+    margin: 0 8px;
+}
+
+h1 em {
+    font-style: normal;
+
+    font-weight: 400;
+}
+
+.page-heading p {
+    margin-top: 8px;
+
+    color: #7b716b;
+}
+
+.add-button {
+    border: none;
+
+    background: var(--brown);
+
+    color: white;
+
+    padding: 15px 23px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.calendar-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(270px, 1fr));
+
+    gap: 20px;
+}
+
+.calendar-card {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 15px rgba(59, 41, 35, 0.07);
+}
+
+.calendar-card-date {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #786d67;
+
+    font-size: 13px;
+
+    margin-bottom: 18px;
+}
+
+.calendar-card h3 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 21px;
+}
+
+.delete-log {
+    margin-top: 18px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #8a7770;
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.delete-log:hover {
+    color: #a33d34;
+}
+
+.calendar-empty {
+    text-align: center;
+
+    padding: 100px 20px;
+
+    color: #827771;
+}
+
+.calendar-empty .material-symbols-outlined {
+    font-size: 50px;
+
+    margin-bottom: 15px;
+}
+
+.calendar-empty h2 {
+    font-family: "Playfair Display", serif;
+
+    margin-bottom: 8px;
+}
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.68);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 999;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.log-modal {
+    width: 100%;
+
+    max-width: 500px;
+
+    background: #faf7ef;
+
+    padding: 40px;
+
+    border-radius: 14px;
+
+    position: relative;
+}
+
+.log-modal h2 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 34px;
+
+    margin-bottom: 25px;
+}
+
+.close-modal {
+    position: absolute;
+
+    right: 25px;
+
+    top: 18px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 32px;
+
+    cursor: pointer;
+}
+
+.log-modal label {
+    display: block;
+
+    margin: 18px 0 8px;
+
+    font-weight: 600;
+}
+
+.log-modal input,
+.log-modal select {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    background: white;
+}
+
+.save-log-button {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 14px;
+
+    border: none;
+
+    background: var(--brown);
+
+    color: white;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.calendar-error {
+    margin-top: 12px;
+
+    color: #a33d34;
+
+    font-size: 13px;
+}
+
+footer {
+    min-height: 58px;
+
+    background: #777472;
+
+    color: white;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 48px;
+
+    font-size: 14px;
+}
+
+.footer-links {
+    display: flex;
+
+    gap: 40px;
+}
+
+@media (max-width: 800px) {
+
+    .top-header {
+        padding: 0 20px;
+    }
+
+    .tagline {
+        display: none;
+    }
+
+    .app-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+
+        padding: 15px;
+    }
+
+    .navigation {
+        flex-direction: row;
+
+        overflow-x: auto;
+    }
+
+    .nav-item {
+        width: auto;
+
+        flex-shrink: 0;
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+
+    .page-heading {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+    footer {
+        padding: 20px;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+}
