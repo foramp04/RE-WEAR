@@ -1,0 +1,617 @@
+import {
+    getUserData,
+    saveUserData,
+    waitForCurrentUser
+} from "./storage.js";
+
+
+let wardrobe = [];
+
+let outfits = [];
+
+let selectedOutfitItems = [];
+
+
+const outfitsGrid =
+    document.getElementById("outfitsGrid");
+
+const emptyState =
+    document.getElementById("emptyState");
+
+const outfitModal =
+    document.getElementById("outfitModal");
+
+const createButton =
+    document.getElementById("createOutfitButton");
+
+const emptyCreateButton =
+    document.getElementById("emptyCreateButton");
+
+const closeButton =
+    document.getElementById("closeOutfitModal");
+
+const creatorItems =
+    document.getElementById("creatorItems");
+
+const dropZone =
+    document.getElementById("dropZone");
+
+const outfitName =
+    document.getElementById("outfitName");
+
+const saveButton =
+    document.getElementById("saveOutfitButton");
+
+const outfitError =
+    document.getElementById("outfitError");
+
+const navItems =
+    document.querySelectorAll(".nav-item");
+
+
+// load data
+
+function loadData() {
+
+    wardrobe =
+        getUserData(
+            "wardrobe",
+            []
+        );
+
+    outfits =
+        getUserData(
+            "outfits",
+            []
+        );
+
+    renderOutfits();
+
+}
+
+// save data
+
+function saveOutfits() {
+
+    saveUserData(
+        "outfits",
+        outfits
+    );
+
+}
+
+// pop-up
+
+function openCreator() {
+
+    outfitModal.classList.add("open");
+
+    selectedOutfitItems = [];
+
+    outfitName.value = "";
+
+    outfitError.textContent = "";
+
+    renderCreatorItems();
+
+    renderDropZone();
+
+}
+
+
+function closeCreator() {
+
+    outfitModal.classList.remove("open");
+
+}
+
+
+createButton.addEventListener(
+    "click",
+    openCreator
+);
+
+emptyCreateButton.addEventListener(
+    "click",
+    openCreator
+);
+
+closeButton.addEventListener(
+    "click",
+    closeCreator
+);
+
+
+// items in the creator
+
+function renderCreatorItems() {
+
+    creatorItems.innerHTML = "";
+
+
+    const available =
+        wardrobe.filter(
+            item =>
+                item.destination !== "donate"
+        );
+
+
+    if (available.length === 0) {
+
+        creatorItems.innerHTML = `
+            <div class="creator-empty">
+                Your wardrobe is empty.
+                <br><br>
+                Add clothing from the Wardrobe page first.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    available.forEach(item => {
+
+        const element =
+            document.createElement("div");
+
+        element.className =
+            "creator-item";
+
+        element.draggable = true;
+
+        element.dataset.id =
+            item.id;
+
+
+        element.innerHTML = `
+
+            <img
+                src="${item.image}"
+                alt="${escapeHTML(item.name)}"
+            >
+
+            <span>
+                ${escapeHTML(item.name)}
+            </span>
+
+        `;
+
+
+        element.addEventListener(
+            "dragstart",
+            event => {
+
+                event.dataTransfer.setData(
+                    "text/plain",
+                    item.id
+                );
+
+            }
+        );
+
+
+        element.addEventListener(
+            "click",
+            () => {
+
+                addItemToOutfit(item.id);
+
+            }
+        );
+
+
+        creatorItems.appendChild(element);
+
+    });
+
+}
+
+
+// drag and drop
+
+dropZone.addEventListener(
+    "dragover",
+    event => {
+
+        event.preventDefault();
+
+        dropZone.classList.add("drag-over");
+
+    }
+);
+
+
+dropZone.addEventListener(
+    "dragleave",
+    () => {
+
+        dropZone.classList.remove(
+            "drag-over"
+        );
+
+    }
+);
+
+
+dropZone.addEventListener(
+    "drop",
+    event => {
+
+        event.preventDefault();
+
+        dropZone.classList.remove(
+            "drag-over"
+        );
+
+
+        const id =
+            event.dataTransfer.getData(
+                "text/plain"
+            );
+
+
+        addItemToOutfit(id);
+
+    }
+);
+
+
+function addItemToOutfit(id) {
+
+    const item =
+        wardrobe.find(
+            clothing =>
+                clothing.id === id
+        );
+
+
+    if (!item) return;
+
+
+    if (
+        selectedOutfitItems.some(
+            clothing =>
+                clothing.id === id
+        )
+    ) return;
+
+
+    selectedOutfitItems.push(item);
+
+    renderDropZone();
+
+}
+
+
+function removeItemFromOutfit(id) {
+
+    selectedOutfitItems =
+        selectedOutfitItems.filter(
+            item =>
+                item.id !== id
+        );
+
+    renderDropZone();
+
+}
+
+
+function renderDropZone() {
+
+    if (
+        selectedOutfitItems.length === 0
+    ) {
+
+        dropZone.innerHTML = `
+
+            <span class="material-symbols-outlined">
+                add
+            </span>
+
+            <p>
+                Drag items here
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    dropZone.innerHTML = "";
+
+
+    selectedOutfitItems.forEach(item => {
+
+        const element =
+            document.createElement("div");
+
+        element.className =
+            "selected-item";
+
+
+        element.innerHTML = `
+
+            <img
+                src="${item.image}"
+                alt="${escapeHTML(item.name)}"
+            >
+
+            <button
+                type="button"
+                data-id="${item.id}"
+            >
+                ×
+            </button>
+
+        `;
+
+
+        element
+            .querySelector("button")
+            .addEventListener(
+                "click",
+                () =>
+                    removeItemFromOutfit(
+                        item.id
+                    )
+            );
+
+
+        dropZone.appendChild(element);
+
+    });
+
+}
+
+
+// save button
+
+saveButton.addEventListener(
+    "click",
+    () => {
+
+        const name =
+            outfitName.value.trim();
+
+
+        if (!name) {
+
+            outfitError.textContent =
+                "Please give your outfit a name.";
+
+            return;
+
+        }
+
+
+        if (
+            selectedOutfitItems.length === 0
+        ) {
+
+            outfitError.textContent =
+                "Add at least one wardrobe item.";
+
+            return;
+
+        }
+
+
+        const outfit = {
+
+            id: crypto.randomUUID(),
+
+            name,
+
+            items:
+                selectedOutfitItems.map(
+                    item => item.id
+                ),
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        outfits.push(outfit);
+
+        saveOutfits();
+
+        closeCreator();
+
+        renderOutfits();
+
+    }
+);
+
+
+function renderOutfits() {
+
+    outfitsGrid.innerHTML = "";
+
+
+    if (outfits.length === 0) {
+
+        outfitsGrid.style.display =
+            "none";
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    outfitsGrid.style.display =
+        "grid";
+
+    emptyState.style.display =
+        "none";
+
+
+    outfits.forEach(outfit => {
+
+        const items =
+            outfit.items
+                .map(id =>
+                    wardrobe.find(
+                        item =>
+                            item.id === id
+                    )
+                )
+                .filter(Boolean);
+
+
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "outfit-card";
+
+
+        const images =
+            items.map(
+                item => `
+
+                    <img
+                        src="${item.image}"
+                        alt="${escapeHTML(item.name)}"
+                    >
+
+                `
+            ).join("");
+
+
+        card.innerHTML = `
+
+            <div class="outfit-images">
+
+                ${images}
+
+            </div>
+
+
+            <div class="outfit-information">
+
+                <h3>
+                    ${escapeHTML(outfit.name)}
+                </h3>
+
+                <p>
+                    ${items.length}
+                    ${items.length === 1 ? "piece" : "pieces"}
+                </p>
+
+
+                <button
+                    class="delete-outfit"
+                    data-id="${outfit.id}"
+                >
+                    Delete outfit
+                </button>
+
+            </div>
+
+        `;
+
+
+        outfitsGrid.appendChild(card);
+
+    });
+
+
+    document
+        .querySelectorAll(".delete-outfit")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const id =
+                        button.dataset.id;
+
+
+                    const outfit =
+                        outfits.find(
+                            item =>
+                                item.id === id
+                        );
+
+
+                    if (!outfit) return;
+
+
+                    if (
+                        !confirm(
+                            `Delete "${outfit.name}"?`
+                        )
+                    ) return;
+
+
+                    outfits =
+                        outfits.filter(
+                            item =>
+                                item.id !== id
+                        );
+
+
+                    saveOutfits();
+
+                    renderOutfits();
+
+                }
+            );
+
+        });
+
+}
+
+
+// navigation
+
+navItems.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                button.dataset.page;
+
+        }
+    );
+
+});
+
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+waitForCurrentUser().then(user => {
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+    loadData();
+
+});
