@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>RE:WEAR | Shared Closet</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="shared-closet.css"
+    >
+
+</head>
+
+<body>
+
+
+<header class="top-header">
+
+    <div class="logo">
+        RE:<span>WEAR</span>
+    </div>
+
+    <div class="tagline">
+        Rewear. Restyle. Repeat.
+    </div>
+
+</header>
+
+
+<div class="app-container">
+
+
+<aside class="sidebar">
+
+    <div class="sidebar-title">
+
+        <strong>Your Re:Space</strong>
+
+        <button class="menu-button">
+
+            <span class="material-symbols-outlined">
+                menu
+            </span>
+
+        </button>
+
+    </div>
+
+
+    <nav class="navigation">
+
+        <button
+            class="nav-item"
+            data-page="dashboard.html"
+        >
+
+            <span class="material-symbols-outlined">
+                checkroom
+            </span>
+
+            Wardrobe
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="outfits.html"
+        >
+
+            <span class="material-symbols-outlined">
+                styler
+            </span>
+
+            Outfits
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="calendar.html"
+        >
+
+            <span class="material-symbols-outlined">
+                calendar_month
+            </span>
+
+            Calendar
+
+        </button>
+
+
+        <button
+            class="nav-item active"
+            data-page="shared-closet.html"
+        >
+
+            <span class="material-symbols-outlined">
+                diversity_3
+            </span>
+
+            Shared Closet
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="profile.html"
+        >
+
+            <span class="material-symbols-outlined">
+                person
+            </span>
+
+            Profile
+
+        </button>
+
+    </nav>
+
+
+    <button
+        class="sign-out"
+        id="signOutButton"
+    >
+
+        <span class="material-symbols-outlined">
+            logout
+        </span>
+
+        Sign Out
+
+    </button>
+
+</aside>
+
+
+<main class="main-content">
+
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            SHARED CLOSET
+            <span>|</span>
+            <em>SHARE THE LOVE</em>
+        </h1>
+
+        <p>
+            Discover pieces shared by the community.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="shared-tabs">
+
+    <button
+        class="shared-tab active"
+        data-tab="browse"
+    >
+        Browse
+    </button>
+
+
+    <button
+        class="shared-tab"
+        data-tab="requests"
+    >
+        Requests
+    </button>
+
+
+    <button
+        class="shared-tab"
+        data-tab="my-requests"
+    >
+        My Requests
+    </button>
+
+</div>
+
+
+<section
+    id="browseTab"
+    class="shared-tab-content active"
+>
+
+    <div
+        class="shared-grid"
+        id="browseGrid"
+    ></div>
+
+
+    <div
+        class="shared-empty"
+        id="browseEmpty"
+    >
+
+        <span class="material-symbols-outlined">
+            volunteer_activism
+        </span>
+
+        <h2>
+            Nothing has been shared yet
+        </h2>
+
+        <p>
+            Donated clothing from the community will appear here.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section
+    id="requestsTab"
+    class="shared-tab-content"
+>
+
+    <div
+        class="request-list"
+        id="requestsList"
+    ></div>
+
+
+    <div
+        class="shared-empty"
+        id="requestsEmpty"
+    >
+
+        <span class="material-symbols-outlined">
+            inbox
+        </span>
+
+        <h2>
+            No requests yet
+        </h2>
+
+        <p>
+            Requests for your donated items will appear here.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section
+    id="myRequestsTab"
+    class="shared-tab-content"
+>
+
+    <div
+        class="request-list"
+        id="myRequestsList"
+    ></div>
+
+
+    <div
+        class="shared-empty"
+        id="myRequestsEmpty"
+    >
+
+        <span class="material-symbols-outlined">
+            send
+        </span>
+
+        <h2>
+            You haven't requested anything
+        </h2>
+
+        <p>
+            Items you request will appear here.
+        </p>
+
+    </div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<footer>
+
+    <div class="footer-links">
+
+        <span>About</span>
+
+        <span>Contact</span>
+
+        <span>Privacy Policy</span>
+
+    </div>
+
+    <div>
+        © 2026 RE:WEAR
+    </div>
+
+</footer>
+
+
+<!-- request pop-up -->
+
+<div
+    class="modal-overlay"
+    id="requestModal"
+>
+
+    <div class="request-modal">
+
+        <button
+            class="close-modal"
+            id="closeRequestModal"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Request this item?
+        </h2>
+
+
+        <div
+            id="requestItemPreview"
+        ></div>
+
+
+        <p class="request-help">
+            Your request will be recorded and shown under My Requests.
+        </p>
+
+
+        <button
+            class="confirm-request"
+            id="confirmRequest"
+        >
+            Send Request
+        </button>
+
+    </div>
+
+</div>
+
+
+<script
+    type="module"
+    src="shared-closet.js"
+></script>
+
+</body>
+</html>
