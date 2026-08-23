@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RE:WEAR | Profile</title>
+
+    <!-- Google Material Symbols -->
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0"
+    >
+
+    <link rel="stylesheet" href="profile.css">
+</head>
+
+<body>
+
+<!-- header -->
+
+<header class="top-header">
+
+    <div class="logo">
+        RE:WEAR
+    </div>
+
+    <div class="tagline">
+        Rewear. Restyle. Repeat.
+    </div>
+
+</header>
+
+<div class="app-layout">
+
+
+    <!-- menu -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <div class="space-title">
+                <span>Your Re:Space</span>
+
+                <span class="material-symbols-outlined menu-icon">
+                    menu
+                </span>
+            </div>
+
+
+            <nav class="navigation">
+
+                <a href="dashboard.html" class="nav-item">
+                    <span class="material-symbols-outlined">
+                        checkroom
+                    </span>
+                    <span>Wardrobe</span>
+                </a>
+
+
+                <a href="outfits.html" class="nav-item">
+                    <span class="material-symbols-outlined">
+                        styler
+                    </span>
+                    <span>Outfits</span>
+                </a>
+
+
+                <a href="calendar.html" class="nav-item">
+                    <span class="material-symbols-outlined">
+                        calendar_month
+                    </span>
+                    <span>Calendar</span>
+                </a>
+
+
+                <a href="shared-closet.html" class="nav-item">
+                    <span class="material-symbols-outlined">
+                        diversity_3
+                    </span>
+                    <span>Shared Closet</span>
+                </a>
+
+
+                <a href="profile.html" class="nav-item active">
+                    <span class="material-symbols-outlined">
+                        person
+                    </span>
+                    <span>Profile</span>
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="login.html" class="nav-item sign-out">
+
+                <span class="material-symbols-outlined">
+                    logout
+                </span>
+
+                <span>Sign Out</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- body -->
+
+    <main class="main-content">
+
+        <div class="profile-page">
+
+
+            <h1 class="page-title">
+                PROFILE <span>|</span> YOU
+            </h1>
+
+
+            <div class="profile-layout">
+
+
+                <section class="profile-main">
+
+
+                    <!-- pfp -->
+
+                    <div class="profile-photo-section">
+
+                        <div class="profile-photo-wrapper">
+
+                            <img
+                                id="profilePhoto"
+                                class="profile-photo"
+                                src=""
+                                alt="Profile photo"
+                            >
+
+                            <div
+                                id="defaultProfileIcon"
+                                class="default-profile-icon"
+                            >
+                                <span class="material-symbols-outlined">
+                                    person
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <label
+                            for="profilePhotoInput"
+                            class="change-photo"
+                        >
+                            Change photo
+                        </label>
+
+                        <input
+                            type="file"
+                            id="profilePhotoInput"
+                            accept="image/*"
+                            capture="user"
+                            hidden
+                        >
+
+                    </div>
+
+
+
+                    <!-- account details -->
+
+                    <div class="profile-form">
+
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="example@gmail.com"
+                        >
+
+
+                        <label for="displayName">
+                            Display Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="displayName"
+                            placeholder="Your name"
+                        >
+
+
+                        <button
+                            type="button"
+                            id="saveProfile"
+                            class="save-button"
+                        >
+                            Save
+                        </button>
+
+
+                        <p
+                            id="saveMessage"
+                            class="save-message"
+                        ></p>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- summary -->
+
+                <aside class="profile-summary">
+
+
+                    <div class="summary-item">
+
+                        <span
+                            id="wardrobeCount"
+                            class="summary-number"
+                        >
+                            0
+                        </span>
+
+                        <span class="summary-label">
+                            Items
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span
+                            id="outfitCount"
+                            class="summary-number"
+                        >
+                            0
+                        </span>
+
+                        <span class="summary-label">
+                            Outfits
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span
+                            id="donatedCount"
+                            class="summary-number"
+                        >
+                            0
+                        </span>
+
+                        <span class="summary-label">
+                            Items Donated
+                        </span>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- footer -->
+
+<footer class="footer">
+
+    <div class="footer-links">
+
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+
+    </div>
+
+    <div class="copyright">
+        © 2026
+    </div>
+
+</footer>
+
+
+<script type="module" src="profile.js"></script>
+
+</body>
+</html>
