@@ -1,0 +1,116 @@
+import {
+    auth,
+    signInWithEmailAndPassword
+} from "./firebase.js";
+
+import {
+    createUserStorage
+} from "./storage.js";
+
+
+const loginForm =
+    document.getElementById("auth-form");
+
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
+
+const loginButton =
+    document.getElementById("login-btn");
+
+
+loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            emailInput.value.trim();
+
+        const password =
+            passwordInput.value;
+
+
+        if (!email || !password) {
+
+            alert(
+                "Please enter your email and password."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            loginButton.disabled = true;
+
+            loginButton.textContent =
+                "Logging in...";
+
+
+            console.log(
+                "LOGIN: starting..."
+            );
+
+
+            // Sign in with Firebase
+            const userCredential =
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            console.log(
+                "LOGIN: successful",
+                userCredential.user.uid
+            );
+
+
+            
+            createUserStorage();
+
+
+            console.log(
+                "LOGIN: storage checked"
+            );
+
+
+            // dashboard navigation
+            window.location.assign(
+                "dashboard.html"
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "LOGIN ERROR:",
+                error
+            );
+
+
+            alert(
+                "Login failed:\n\n" +
+                error.code +
+                "\n\n" +
+                error.message
+            );
+
+
+            loginButton.disabled = false;
+
+            loginButton.textContent =
+                "Log In";
+
+        }
+
+    }
+);
